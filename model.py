@@ -151,7 +151,7 @@ class OutBranch(nn.Module):
 
 
 class RefineModel(nn.Module):
-    def __init__(self, cnum):
+    def __init__(self):
         super(RefineModel, self).__init__()
         cnum = 48
 
