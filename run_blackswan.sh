@@ -25,10 +25,11 @@ srun bash -c "ls /scratch0/mgwillia/DAVIS;"
 srun bash -c "hostname;"
 for FOLDER in ${DAVIS_FOLDERS[@]}; do
     srun bash -c "mkdir -p /vulcanscratch/mgwillia/implicit-inpainting-pytorch/results/${FOLDER}_fixed;"
+    srun bash -c "mkdir -p /vulcanscratch/mgwillia/implicit-inpainting-pytorch/checkpoints/${FOLDER}_fixed;"
     srun bash -c "mkdir -p /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed;"
     srun bash -c "python preprocess_mask.py --annotation-path /scratch0/mgwillia/DAVIS_ANNOS/$FOLDER \
                     --mask-path /scratch0/mgwillia/DAVIS_MASKS/${FOLDER} --generate-fix-mask;"
-    srun bash -c "python train.py --chkpt-dir /vulcanscratch/mgwillia/implicit-inpainting-pytorch/checkpoints/${FOLDER}_fixed \
+    srun bash -c "python train.py --dir-chkpt /vulcanscratch/mgwillia/implicit-inpainting-pytorch/checkpoints/${FOLDER}_fixed \
                     --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed;"
     srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/implicit-inpainting-pytorch/results/${FOLDER}_fixed \
                     --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
