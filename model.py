@@ -111,7 +111,7 @@ class AuxBranch(nn.Module):
         self.fineconv2_3 = GenConv(cnum, 2*cnum, 3, 1)
         self.fineconv2_4 = GenConv(2*cnum, 4*cnum, 3, 2)
         self.fineconv2_5 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.fineconv2_6 = GenConv(4*cnum, 4*cnum, 3, 1, activation=nn.ReLu())
+        self.fineconv2_6 = GenConv(4*cnum, 4*cnum, 3, 1, activation=nn.ReLU())
         self.fineconv2_9 = GenConv(4*cnum, 4*cnum, 3, 1)
         self.fineconv2_10 = GenConv(4*cnum, 4*cnum, 3, 1)
 
