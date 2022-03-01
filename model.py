@@ -8,7 +8,7 @@ class GenConv(nn.Module):
         self.activation = activation
         self.activation = activation
         self.sigmoid = nn.Sigmoid()
-        self.conv = nn.Conv2D(in_channels, out_channels, ksize, stride, dilation=rate, padding='same')
+        self.conv = nn.Conv2d(in_channels, out_channels, ksize, stride, dilation=rate, padding='same')
 
 
     def forward(self, x):
