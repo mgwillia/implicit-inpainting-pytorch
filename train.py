@@ -54,7 +54,7 @@ def main():
     dataset = IIVIDataset(args.dir_video, args.dir_mask, transform=transform)
 
     args.chkpt_freq = 20
-    args.num_epochs = 100 #2000
+    args.num_epochs = 2 #2000
     lr_init = 2e-4
     model = refine_model().cuda()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr_init)
