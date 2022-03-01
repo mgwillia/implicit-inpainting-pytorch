@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
 import torch
-from models import resnet12
+from model import refine_model
 
 from dataset import IIVIDataset
 from torchvision import transforms
@@ -56,7 +56,7 @@ def main():
     args.chkpt_freq = 20
     args.num_epochs = 100 #2000
     lr_init = 2e-4
-    model = resnet12(num_classes=64).cuda()
+    model = refine_model().cuda()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr_init)
 
     train(args, model, dataset, optimizer)
