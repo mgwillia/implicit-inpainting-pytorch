@@ -79,9 +79,9 @@ class CoarseNet(nn.Module):
         self.conv11 = GenConv(2*cnum, 4*cnum, 3, 1)
         self.conv12 = GenConv(2*cnum, 4*cnum, 3, 1)
         self.conv13 = GenDeconv(2*cnum, 2*cnum)
-        self.conv14 = GenConv(2*cnum, 2*cnum, 3, 1)
+        self.conv14 = GenConv(cnum, 2*cnum, 3, 1)
         self.conv15 = GenDeconv(cnum, cnum),
-        self.conv16 = GenConv(cnum, cnum//2, 3, 1),
+        self.conv16 = GenConv(cnum//2, cnum//2, 3, 1),
         self.conv17 = GenConv(cnum//4, 3, 3, 1, activation=None)
 
     def forward(self, x):
@@ -163,9 +163,9 @@ class OutBranch(nn.Module):
         self.outconv1 = GenConv(2*cnum, 4*cnum, 3, 1)
         self.outconv2 = GenConv(2*cnum, 4*cnum, 3, 1)
         self.outconv3 = GenDeconv(2*cnum, 2*cnum)
-        self.outconv4 = GenConv(2*cnum, 2*cnum, 3, 1)
-        self.outconv5 = GenDeconv(2*cnum, cnum)
-        self.outconv6 = GenConv(cnum, cnum//2, 3, 1)
+        self.outconv4 = GenConv(cnum, 2*cnum, 3, 1)
+        self.outconv5 = GenDeconv(cnum, cnum)
+        self.outconv6 = GenConv(cnum//2, cnum//2, 3, 1)
         self.outconv7 = GenConv(cnum//4, 3, 3, 1, activation=None)
 
     def forward(self, x):
