@@ -20,7 +20,7 @@ def eval(args, model, dataset):
             masked_images = images*(1.-masks)
             model_input = torch.cat([masked_images, masks], dim=1)
             coarse_output, fine_output = model(model_input, masks)
-            print(f'Should be same shape, squeeze? {fine_output.shape} {images.shape}')
+            #print(f'Should be same shape, squeeze? {fine_output.shape} {images.shape}')
             l2_loss = F.mse_loss(fine_output, images, reduction='none')
             psnr = -10 * torch.log10(l2_loss.flatten(start_dim=1).mean(1) + 1e-15)
             psnr_list.append(psnr)

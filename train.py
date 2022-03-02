@@ -24,8 +24,6 @@ def train(args, model, train_dataset, optimizer):
             prepared_masks = torch.zeros_like(masks)
             prepared_masks[(masks+aug_masks)>0] = 1.0
             masked_images = images*(1.-masks)
-            print(masked_images.shape)
-            print(prepared_masks.shape)
             model_input = torch.cat([masked_images, prepared_masks], dim=1)
             coarse_output, fine_output = model(model_input, prepared_masks) 
             loss = torch.mean(torch.abs(images - coarse_output)*(1-masks)) + torch.mean(torch.abs(images - fine_output)*(1-masks))
@@ -39,6 +37,9 @@ def train(args, model, train_dataset, optimizer):
         print(f'loss: {np.mean(np.array(losses))}')
         if epoch % args.chkpt_freq == 0:
             torch.save(model.state_dict(), f'{args.dir_chkpt}/checkpoint_{epoch}.pth.tar')
+
+        if epoch % 100 == 0:
+            print(f'Loss at epoch {epoch}: {np.array(losses).mean()}')
 
 
 def main():
@@ -55,8 +56,8 @@ def main():
 
     dataset = IIVIDataset(args.dir_video, args.dir_mask, transform=transform)
 
-    args.chkpt_freq = 20
-    args.num_epochs = 2 #2000
+    args.chkpt_freq = 1000
+    args.num_epochs = 3000
     lr_init = 2e-4
     model = refine_model().cuda()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr_init)

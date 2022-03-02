@@ -14,7 +14,7 @@ class Conv2dSame(torch.nn.Conv2d):
 
         pad_h = self.calc_same_pad(i=ih, k=self.kernel_size[0], s=self.stride[0], d=self.dilation[0])
         pad_w = self.calc_same_pad(i=iw, k=self.kernel_size[1], s=self.stride[1], d=self.dilation[1])
-        print(self.kernel_size, self.stride, self.dilation, pad_h, pad_w)
+        #print(self.kernel_size, self.stride, self.dilation, pad_h, pad_w)
 
         if pad_h > 0 or pad_w > 0:
             x = F.pad(
@@ -198,7 +198,7 @@ class RefineModel(nn.Module):
         x = torch.tanh(x)
         x_stage1 = x
 
-        print(f'debugging... xin shape: {xin.shape}, x shape: {x.shape}')
+        #print(f'debugging... xin shape: {xin.shape}, x shape: {x.shape}')
         # stage 2
         x = x*mask + xin[:, 0:3, :, :]*(1.-mask)
         x.view(list(xin[:, 0:3, :, :].shape))
