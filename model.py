@@ -205,11 +205,11 @@ class RefineModel(nn.Module):
 
         # first branch
         xnow = x
-        x = self.conv_branch(xnow)
+        x = self.main_branch(xnow)
         x_hallu = x
 
         # second branch
-        x = self.conv_branch2(xnow)
+        x = self.aux_branch(xnow)
         pm = x
 
         # out branch
