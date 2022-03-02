@@ -24,6 +24,8 @@ def train(args, model, train_dataset, optimizer):
             prepared_masks = torch.zeros_like(masks)
             prepared_masks[(masks+aug_masks)>0] = 1.0
             masked_images = images*(1.-masks)
+            print(masked_images.shape)
+            print(prepared_masks.shape)
             model_input = torch.cat([masked_images, prepared_masks], dim=3)
             coarse_output, fine_output = model(model_input, prepared_masks) 
             loss = torch.mean(torch.abs(images - coarse_output)*(1-masks)) + torch.mean(torch.abs(images - fine_output)*(1-masks))
