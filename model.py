@@ -160,7 +160,7 @@ class AuxBranch(nn.Module):
 class OutBranch(nn.Module):
     def __init__(self, cnum):
         super(OutBranch, self).__init__()
-        self.outconv1 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.outconv1 = GenConv(4*cnum, 4*cnum, 3, 1)
         self.outconv2 = GenConv(2*cnum, 4*cnum, 3, 1)
         self.outconv3 = GenDeconv(2*cnum, 2*cnum)
         self.outconv4 = GenConv(cnum, 2*cnum, 3, 1)
