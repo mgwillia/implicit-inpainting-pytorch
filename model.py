@@ -14,6 +14,7 @@ class Conv2dSame(torch.nn.Conv2d):
 
         pad_h = self.calc_same_pad(i=ih, k=self.kernel_size[0], s=self.stride[0], d=self.dilation[0])
         pad_w = self.calc_same_pad(i=iw, k=self.kernel_size[1], s=self.stride[1], d=self.dilation[1])
+        print(self.kernel_size, self.stride, self.dilation, pad_h, pad_w)
 
         if pad_h > 0 or pad_w > 0:
             x = F.pad(
@@ -66,22 +67,22 @@ class CoarseNet(nn.Module):
     def __init__(self, cnum):
         super(CoarseNet, self).__init__()
         self.conv1 = GenConv(4, cnum, 5, 1)
-        self.conv2 = GenConv(2*cnum, 2*cnum, 3, 2)
-        self.conv3 = GenConv(2*cnum, 2*cnum, 3, 1)
-        self.conv4 = GenConv(2*cnum, 4*cnum, 3, 2)
-        self.conv5 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.conv6 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.conv7 = GenConv(4*cnum, 4*cnum, 3, rate=2)
-        self.conv8 = GenConv(4*cnum, 4*cnum, 3, rate=4)
-        self.conv9 = GenConv(4*cnum, 4*cnum, 3, rate=8)
-        self.conv10 = GenConv(4*cnum, 4*cnum, 3, rate=16)
-        self.conv11 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.conv12 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.conv13 = GenDeconv(4*cnum, 2*cnum)
+        self.conv2 = GenConv(cnum//2, 2*cnum, 3, 2)
+        self.conv3 = GenConv(cnum, 2*cnum, 3, 1)
+        self.conv4 = GenConv(cnum, 4*cnum, 3, 2)
+        self.conv5 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.conv6 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.conv7 = GenConv(2*cnum, 4*cnum, 3, rate=2)
+        self.conv8 = GenConv(2*cnum, 4*cnum, 3, rate=4)
+        self.conv9 = GenConv(2*cnum, 4*cnum, 3, rate=8)
+        self.conv10 = GenConv(2*cnum, 4*cnum, 3, rate=16)
+        self.conv11 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.conv12 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.conv13 = GenDeconv(2*cnum, 2*cnum)
         self.conv14 = GenConv(2*cnum, 2*cnum, 3, 1)
-        self.conv15 = GenDeconv(2*cnum, cnum),
+        self.conv15 = GenDeconv(cnum, cnum),
         self.conv16 = GenConv(cnum, cnum//2, 3, 1),
-        self.conv17 = GenConv(cnum//2, 3, 3, 1, activation=None)
+        self.conv17 = GenConv(cnum//4, 3, 3, 1, activation=None)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -107,15 +108,15 @@ class MainBranch(nn.Module):
     def __init__(self, cnum):
         super(MainBranch, self).__init__()
         self.fineconv1 = GenConv(4, cnum, 5, 1)
-        self.fineconv2 = GenConv(cnum, cnum, 3, 2)
-        self.fineconv3 = GenConv(cnum, 2*cnum, 3, 1)
-        self.fineconv4 = GenConv(2*cnum, 2*cnum, 3, 2)
-        self.fineconv5 = GenConv(2*cnum, 4*cnum, 3, 1)
-        self.fineconv6 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.fineconv7 = GenConv(4*cnum, 4*cnum, 3, rate=2)
-        self.fineconv8 = GenConv(4*cnum, 4*cnum, 3, rate=4)
-        self.fineconv9 = GenConv(4*cnum, 4*cnum, 3, rate=8)
-        self.fineconv10 = GenConv(4*cnum, 4*cnum, 3, rate=16)
+        self.fineconv2 = GenConv(cnum // 2, cnum, 3, 2)
+        self.fineconv3 = GenConv(cnum // 2, 2*cnum, 3, 1)
+        self.fineconv4 = GenConv(cnum, 2*cnum, 3, 2)
+        self.fineconv5 = GenConv(cnum, 4*cnum, 3, 1)
+        self.fineconv6 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.fineconv7 = GenConv(2*cnum, 4*cnum, 3, rate=2)
+        self.fineconv8 = GenConv(2*cnum, 4*cnum, 3, rate=4)
+        self.fineconv9 = GenConv(2*cnum, 4*cnum, 3, rate=8)
+        self.fineconv10 = GenConv(2*cnum, 4*cnum, 3, rate=16)
 
     def forward(self, x):
         x = self.fineconv1(x)
@@ -135,13 +136,13 @@ class AuxBranch(nn.Module):
     def __init__(self, cnum):
         super(AuxBranch, self).__init__()
         self.fineconv2_1 = GenConv(4, cnum, 5, 1)
-        self.fineconv2_2 = GenConv(cnum, cnum, 3, 2)
-        self.fineconv2_3 = GenConv(cnum, 2*cnum, 3, 1)
-        self.fineconv2_4 = GenConv(2*cnum, 4*cnum, 3, 2)
-        self.fineconv2_5 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.fineconv2_6 = GenConv(4*cnum, 4*cnum, 3, 1, activation=nn.ReLU())
-        self.fineconv2_9 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.fineconv2_10 = GenConv(4*cnum, 4*cnum, 3, 1)
+        self.fineconv2_2 = GenConv(cnum // 2, cnum, 3, 2)
+        self.fineconv2_3 = GenConv(cnum // 2, 2*cnum, 3, 1)
+        self.fineconv2_4 = GenConv(cnum, 4*cnum, 3, 2)
+        self.fineconv2_5 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.fineconv2_6 = GenConv(2*cnum, 4*cnum, 3, 1, activation=nn.ReLU())
+        self.fineconv2_9 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.fineconv2_10 = GenConv(2*cnum, 4*cnum, 3, 1)
 
 
     def forward(self, x):
@@ -159,13 +160,13 @@ class AuxBranch(nn.Module):
 class OutBranch(nn.Module):
     def __init__(self, cnum):
         super(OutBranch, self).__init__()
-        self.outconv1 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.outconv2 = GenConv(4*cnum, 4*cnum, 3, 1)
-        self.outconv3 = GenDeconv(4*cnum, 2*cnum)
+        self.outconv1 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.outconv2 = GenConv(2*cnum, 4*cnum, 3, 1)
+        self.outconv3 = GenDeconv(2*cnum, 2*cnum)
         self.outconv4 = GenConv(2*cnum, 2*cnum, 3, 1)
         self.outconv5 = GenDeconv(2*cnum, cnum)
         self.outconv6 = GenConv(cnum, cnum//2, 3, 1)
-        self.outconv7 = GenConv(cnum//2, 3, 3, 1, activation=None)
+        self.outconv7 = GenConv(cnum//4, 3, 3, 1, activation=None)
 
     def forward(self, x):
         x = self.outconv1(x)
