@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class Conv2dSame(torch.nn.Conv2d):
@@ -34,7 +35,7 @@ class GenConv(nn.Module):
         self.activation = activation
         self.activation = activation
         self.sigmoid = nn.Sigmoid()
-        self.conv = nn.Conv2dSame(in_channels, out_channels, ksize, stride, dilation=rate)
+        self.conv = Conv2dSame(in_channels, out_channels, ksize, stride, dilation=rate)
 
 
     def forward(self, x):
