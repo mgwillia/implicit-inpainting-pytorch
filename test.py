@@ -8,12 +8,11 @@ from dataset import IIVIDataset
 from torchvision import transforms
 
 
-def eval(model, dataset):
+def eval(args, model, dataset):
     dataloader = torch.utils.data.DataLoader(dataset, num_workers=4,
             batch_size=1, pin_memory=True, drop_last=False, shuffle=False)
 
     psnr_list = []
-    model.eval()
     with torch.no_grad():
         for _, batch in enumerate(dataloader):
             images = batch['image'].cuda(non_blocking=True)
