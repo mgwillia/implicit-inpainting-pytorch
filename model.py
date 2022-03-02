@@ -80,8 +80,8 @@ class CoarseNet(nn.Module):
         self.conv12 = GenConv(2*cnum, 4*cnum, 3, 1)
         self.conv13 = GenDeconv(2*cnum, 2*cnum)
         self.conv14 = GenConv(cnum, 2*cnum, 3, 1)
-        self.conv15 = GenDeconv(cnum, cnum),
-        self.conv16 = GenConv(cnum//2, cnum//2, 3, 1),
+        self.conv15 = GenDeconv(cnum, cnum)
+        self.conv16 = GenConv(cnum//2, cnum//2, 3, 1)
         self.conv17 = GenConv(cnum//4, 3, 3, 1, activation=None)
 
     def forward(self, x):
