@@ -31,7 +31,6 @@ for FOLDER in ${DAVIS_FOLDERS[@]}; do
                     --mask-path /scratch0/mgwillia/DAVIS_MASKS/${FOLDER} --generate-fix-mask;"
     srun bash -c "python train.py --dir-chkpt /vulcanscratch/mgwillia/implicit-inpainting-pytorch/checkpoints/${FOLDER}_fixed \
                     --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed;"
-    srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/implicit-inpainting-pytorch/results/${FOLDER}_fixed \
-                    --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
-                    --model-restore /vulcanscratch/mgwillia/implicit-inpainting-pytorch/checkpoints/$FOLDER/checkpoint_final.index;"
+    srun bash -c "python test.py --dir-chkpt /vulcanscratch/mgwillia/implicit-inpainting-pytorch/checkpoints/${FOLDER}_fixed \
+                    --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed;"
 done
