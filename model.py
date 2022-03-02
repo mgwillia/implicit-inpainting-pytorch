@@ -107,7 +107,7 @@ class CoarseNet(nn.Module):
 class MainBranch(nn.Module):
     def __init__(self, cnum):
         super(MainBranch, self).__init__()
-        self.fineconv1 = GenConv(4, cnum, 5, 1)
+        self.fineconv1 = GenConv(3, cnum, 5, 1)
         self.fineconv2 = GenConv(cnum // 2, cnum, 3, 2)
         self.fineconv3 = GenConv(cnum // 2, 2*cnum, 3, 1)
         self.fineconv4 = GenConv(cnum, 2*cnum, 3, 2)
@@ -135,7 +135,7 @@ class MainBranch(nn.Module):
 class AuxBranch(nn.Module):
     def __init__(self, cnum):
         super(AuxBranch, self).__init__()
-        self.fineconv2_1 = GenConv(4, cnum, 5, 1)
+        self.fineconv2_1 = GenConv(3, cnum, 5, 1)
         self.fineconv2_2 = GenConv(cnum // 2, cnum, 3, 2)
         self.fineconv2_3 = GenConv(cnum // 2, 2*cnum, 3, 1)
         self.fineconv2_4 = GenConv(cnum, 4*cnum, 3, 2)
