@@ -22,7 +22,7 @@ class IIVIDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         image_path = self.img_paths[index]
         mask_path = self.mask_paths[index]
-        aug_mask_path = self.mask_paths[torch.randint(high=len(self.img_paths), size=(1,))[1]]
+        aug_mask_path = self.mask_paths[torch.randint(high=len(self.img_paths), size=(1,))[0]]
         with open(image_path, 'rb') as f:
             img = Image.open(f).convert('RGB')
         with open(mask_path, 'rb') as f:
