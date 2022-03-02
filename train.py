@@ -20,7 +20,7 @@ def train(args, model, train_dataset, optimizer):
             aug_masks = batch['aug_mask'].cuda(non_blocking=True)
             shift_h = torch.randint(high=aug_masks.shape[1], size=(1,))[0]
             shift_w = torch.randint(high=aug_masks.shape[2], size=(1,))[0]
-            aug_masks = torch.roll(aug_masks, (shift_h, shift_w), axis=(1,2))
+            aug_masks = torch.roll(aug_masks, (shift_h, shift_w), dims=(1,2))
             prepared_masks = torch.zeros_like(masks)
             prepared_masks[(masks+aug_masks)>0] = 1.0
             masked_images = images*(1.-masks)
