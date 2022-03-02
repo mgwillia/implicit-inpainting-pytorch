@@ -42,7 +42,7 @@ class GenConv(nn.Module):
         x = self.conv(x)
         if self.activation is None:
             return x
-        x, y = torch.split(x, 2, 3)
+        x, y = torch.split(x, 2, dim=1)
         x = self.elu(x)
         y = self.sigmoid(y)
         x = x * y
@@ -211,7 +211,7 @@ class RefineModel(nn.Module):
         pm = x
 
         # out branch
-        x = torch.cat([x_hallu, pm], dim=3)
+        x = torch.cat([x_hallu, pm], dim=1)
         x = self.out_branch(x)
         x = torch.nn.tanh(x)
         x_stage2 = x

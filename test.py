@@ -19,7 +19,7 @@ def eval(model, dataset):
             images = batch['image'].cuda(non_blocking=True)
             masks = batch['mask'].cuda(non_blocking=True)
             masked_images = images*(1.-masks)
-            model_input = torch.cat([masked_images, masks], dim=3)
+            model_input = torch.cat([masked_images, masks], dim=1)
             coarse_output, fine_output = model(model_input, masks)
             print(f'Should be same shape, squeeze? {fine_output.shape} {images.shape}')
             l2_loss = F.mse_loss(fine_output, images, reduction='none')

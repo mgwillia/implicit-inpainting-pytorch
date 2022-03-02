@@ -18,15 +18,15 @@ def train(args, model, train_dataset, optimizer):
             images = batch['image'].cuda(non_blocking=True)
             masks = batch['mask'].cuda(non_blocking=True)
             aug_masks = batch['aug_mask'].cuda(non_blocking=True)
-            shift_h = torch.randint(high=aug_masks.shape[1], size=(1,))[0]
-            shift_w = torch.randint(high=aug_masks.shape[2], size=(1,))[0]
-            aug_masks = torch.roll(aug_masks, (shift_h, shift_w), dims=(1,2))
+            shift_h = torch.randint(high=aug_masks.shape[2], size=(1,))[0]
+            shift_w = torch.randint(high=aug_masks.shape[3], size=(1,))[0]
+            aug_masks = torch.roll(aug_masks, (shift_h, shift_w), dims=(2,3))
             prepared_masks = torch.zeros_like(masks)
             prepared_masks[(masks+aug_masks)>0] = 1.0
             masked_images = images*(1.-masks)
             print(masked_images.shape)
             print(prepared_masks.shape)
-            model_input = torch.cat([masked_images, prepared_masks], dim=3)
+            model_input = torch.cat([masked_images, prepared_masks], dim=1)
             coarse_output, fine_output = model(model_input, prepared_masks) 
             loss = torch.mean(torch.abs(images - coarse_output)*(1-masks)) + torch.mean(torch.abs(images - fine_output)*(1-masks))
 
