@@ -215,7 +215,7 @@ class RefineModel(nn.Module):
         # out branch
         x = torch.cat([x_hallu, pm], dim=1)
         x = self.out_branch(x)
-        x = torch.nn.tanh(x)
+        x = torch.tanh(x)
         x_stage2 = x
 
         return x_stage1, x_stage2
