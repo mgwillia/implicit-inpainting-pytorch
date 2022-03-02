@@ -200,8 +200,8 @@ class RefineModel(nn.Module):
 
         print(f'debugging... xin shape: {xin.shape}, x shape: {x.shape}')
         # stage 2
-        x = x*mask + xin[:, :, :, 0:3]*(1.-mask)
-        x.view(list(xin[:, :, :, 0:3].shape))
+        x = x*mask + xin[:, 0:3, :, :]*(1.-mask)
+        x.view(list(xin[:, 0:3, :, :].shape))
 
         # first branch
         xnow = x
