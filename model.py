@@ -34,7 +34,6 @@ class GenConv(nn.Module):
     def __init__(self, in_channels, out_channels, ksize, stride=1, rate=1, activation=nn.ELU()):
         super(GenConv, self).__init__()
         self.activation = activation
-        self.activation = activation
         self.sigmoid = nn.Sigmoid()
         self.conv = Conv2dSame(in_channels, out_channels, ksize, stride, dilation=rate)
 
@@ -45,7 +44,7 @@ class GenConv(nn.Module):
             return x
         split_size = int(x.shape[1] / 2)
         x, y = torch.split(x, split_size, dim=1)
-        x = self.elu(x)
+        x = self.activation(x)
         y = self.sigmoid(y)
         x = x * y
         return x
