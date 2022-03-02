@@ -43,7 +43,8 @@ class GenConv(nn.Module):
         x = self.conv(x)
         if self.activation is None:
             return x
-        x, y = torch.split(x, 2, dim=1)
+        split_size = int(x.shape[1] / 2)
+        x, y = torch.split(x, split_size, dim=1)
         x = self.elu(x)
         y = self.sigmoid(y)
         x = x * y
